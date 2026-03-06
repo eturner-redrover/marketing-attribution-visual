@@ -209,22 +209,37 @@ export default function UTMAttributionFlow() {
 
             {/* Row 5: Workflow Processing */}
             <div className="bg-yellow-600 rounded-xl p-4 w-full max-w-2xl">
-              <div className="flex items-center justify-center gap-2 mb-3">
+              <div className="flex items-center justify-center gap-2 mb-1">
                 <Zap size={20} />
                 <span className="font-semibold">5. Campaign Initialization Workflow (JavaScript)</span>
               </div>
+              <p className="text-center text-yellow-200 text-xs mb-3">Triggered by the Touchpoint created in 4b — reads its UTM values and wires up the Motion + Campaign</p>
               <div className="grid grid-cols-3 gap-3 text-xs">
                 <div className="bg-yellow-700 rounded p-2">
-                  <p className="font-semibold mb-1">CHANNEL_MAPPING</p>
-                  <p className="text-yellow-200">linkedin + paid_social → "Paid Social" Motion type</p>
+                  <p className="font-semibold mb-1">① Reads UTMs from Touchpoint</p>
+                  <p className="text-yellow-200">Pulls <span className="text-white font-mono">utm_source</span> + <span className="text-white font-mono">utm_medium</span> off the Touchpoint record (4b) and runs them through a lookup table to get a human channel label.</p>
+                  <p className="text-yellow-300 mt-1.5 font-medium">e.g. linkedin + paid_social → "Paid Social"</p>
                 </div>
                 <div className="bg-yellow-700 rounded p-2">
-                  <p className="font-semibold mb-1">Looks Up / Creates Motion</p>
-                  <p className="text-yellow-200">The trackable effort: budget, channel, dates, goals</p>
+                  <p className="font-semibold mb-1">② Finds or Creates a Motion</p>
+                  <p className="text-yellow-200">Searches HubSpot for an existing Motion matching that channel + campaign. If none exists, creates one with budget, dates, and goals. Then associates the Touchpoint to it.</p>
                 </div>
                 <div className="bg-yellow-700 rounded p-2">
-                  <p className="font-semibold mb-1">Rolls Up to Campaign</p>
-                  <p className="text-yellow-200">Campaign = the folder grouping related Motions</p>
+                  <p className="font-semibold mb-1">③ Rolls Up to Campaign</p>
+                  <p className="text-yellow-200">The Motion is linked to a Campaign (the folder). Every Touchpoint under that Motion automatically counts toward the Campaign's pipeline and revenue totals.</p>
+                </div>
+              </div>
+              {/* Example trace */}
+              <div className="mt-3 bg-yellow-800 rounded p-2 text-xs">
+                <p className="text-yellow-300 font-semibold mb-1.5">Example in action:</p>
+                <div className="flex items-center gap-1.5 flex-wrap text-yellow-100">
+                  <span className="bg-yellow-900 rounded px-2 py-0.5">Touchpoint 4b: utm_source=linkedin, utm_medium=paid_social, utm_campaign=q1_launch</span>
+                  <span className="text-yellow-400">→</span>
+                  <span className="bg-yellow-900 rounded px-2 py-0.5">Channel: "Paid Social"</span>
+                  <span className="text-yellow-400">→</span>
+                  <span className="bg-yellow-900 rounded px-2 py-0.5">Motion: "Q1 Launch — LinkedIn Ads"</span>
+                  <span className="text-yellow-400">→</span>
+                  <span className="bg-yellow-900 rounded px-2 py-0.5">Campaign: "Q1 2026 Product Launch"</span>
                 </div>
               </div>
             </div>
